@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__husky__reply",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\enforce-b2b-mention.ps1"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\session-start.ps1"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\pre-compact.ps1"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\post-compact.ps1"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\stop.ps1"
+          },
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File %CLAUDE_PROJECT_DIR%\\hooks\\enforce-discord-reply.ps1"
+          }
+        ]
+      }
+    ]
+  }
+}

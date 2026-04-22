@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "husky": {
+      "command": "node",
+      "args": ["channels/husky-discord.mjs"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
