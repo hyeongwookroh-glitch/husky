@@ -80,14 +80,40 @@ DISCORD_HOME_CHANNEL=
 
 `agentName` 과 instructions 첫 줄 "You are Husky …" 를 답 1 의 persona name 으로 바꾼다.
 
-### 9. document-skills plugin 설치 안내
+### 9. Skills 설치 안내
 
-slash command 는 에이전트가 직접 실행 불가. 유저에게 **설치 완료 후 첫 `run-husky` 실행 시 아래를 세션 안에서 실행하라**고 안내:
+slash command 는 에이전트가 직접 실행 불가. 유저에게 **설치 완료 후 첫 `run-husky` 실행 시 아래 A 를 세션 안에서 실행**하고, **B 는 터미널에서 별도 실행**하라고 안내.
 
+**A. 문서 스킬 (공식 플러그인 번들)** — docx/xlsx/pptx/pdf
 ```
 /plugin marketplace add anthropics/skills
 /plugin install document-skills@anthropics-skills
 ```
+
+**B. 디자인 스킬 (수동 링크)** — algorithmic-art / brand-guidelines / canvas-design / theme-factory
+
+공식 레포에서 `example-skills` 번들에 묶여 있으나 필요한 것만 개별 링크 가능. 허스키 프로젝트 루트에서:
+
+macOS/Linux:
+```bash
+mkdir -p .claude/skills && cd .claude/skills
+git clone --depth 1 https://github.com/anthropics/skills.git _anthropic-skills
+for s in algorithmic-art brand-guidelines canvas-design theme-factory; do
+  ln -s "_anthropic-skills/skills/$s" "$s"
+done
+```
+
+Windows PowerShell (symlink 권한 필요 — Developer Mode 또는 관리자 권한; 안 되면 `Copy-Item -Recurse` 로 복사):
+```powershell
+New-Item -ItemType Directory -Force .claude\skills | Out-Null
+cd .claude\skills
+git clone --depth 1 https://github.com/anthropics/skills.git _anthropic-skills
+foreach ($s in 'algorithmic-art','brand-guidelines','canvas-design','theme-factory') {
+  New-Item -ItemType SymbolicLink -Path $s -Target "_anthropic-skills\skills\$s" | Out-Null
+}
+```
+
+추가 스킬이 필요하면 (`webapp-testing`, `mcp-builder`, `frontend-design` 등) 위 for 루프에 이름만 추가.
 
 ### 10. 완료 마커 + 요약
 
@@ -96,7 +122,8 @@ slash command 는 에이전트가 직접 실행 불가. 유저에게 **설치 �
   - 페르소나 이름
   - `.env` 토큰 입력 여부
   - 다음 실행: macOS `./run-husky.sh` / Windows `run-husky.bat`
-  - 플러그인 설치 안내 (위 9 내용)
+  - 문서 스킬 플러그인 설치 안내 (위 9-A)
+  - 디자인 스킬 수동 링크 안내 (위 9-B)
 
 ### 11. 종료
 

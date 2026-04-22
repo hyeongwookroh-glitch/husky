@@ -73,6 +73,27 @@ run-husky.bat       # Windows
 ```
 → docx / xlsx / pptx / pdf 스킬 활성.
 
+디자인 스킬 (algorithmic-art / brand-guidelines / canvas-design / theme-factory) 은 번들 분리가 안 돼서 수동 링크:
+
+macOS/Linux:
+```bash
+mkdir -p .claude/skills && cd .claude/skills
+git clone --depth 1 https://github.com/anthropics/skills.git _anthropic-skills
+for s in algorithmic-art brand-guidelines canvas-design theme-factory; do
+  ln -s "_anthropic-skills/skills/$s" "$s"
+done
+```
+
+Windows PowerShell (Developer Mode / Admin 권한 필요; 안 되면 `Copy-Item -Recurse` 로 복사):
+```powershell
+New-Item -ItemType Directory -Force .claude\skills | Out-Null
+cd .claude\skills
+git clone --depth 1 https://github.com/anthropics/skills.git _anthropic-skills
+foreach ($s in 'algorithmic-art','brand-guidelines','canvas-design','theme-factory') {
+  New-Item -ItemType SymbolicLink -Path $s -Target "_anthropic-skills\skills\$s" | Out-Null
+}
+```
+
 ## 메모리 디렉토리 오버라이드
 
 기본 외 경로면 `.env` 에 추가:
